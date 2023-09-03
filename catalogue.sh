@@ -23,9 +23,10 @@ VALIDATE(){
         echo -e "$2 ... $R FAILURE $N"
         exit 1
     else
-        echo -e " $2 ... $G SUCCESS $N"
+        echo -e "$2 ... $G SUCCESS $N"
     fi
 }
+
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>> $LOGFILE
 
 VALIDATE $? "Setting up NPM Source"
@@ -65,7 +66,7 @@ VALIDATE $? "copying catalogue.service"
 
 systemctl daemon-reload &>> $LOGFILE
 
-VALIDATE $? "daemon-reload"
+VALIDATE $? "daemon reload"
 
 systemctl enable catalogue &>> $LOGFILE
 
@@ -83,7 +84,7 @@ yum install mongodb-org-shell -y &>> $LOGFILE
 
 VALIDATE $? "Installing mongo client"
 
-mongo --host mongodb.joindevops.live /app/schema/catalogue.js &>> $LOGFILE
+mongo --host mongodb.joindevops.live </app/schema/catalogue.js &>> $LOGFILE
 
 VALIDATE $? "loading catalogue data into mongodb"
 
