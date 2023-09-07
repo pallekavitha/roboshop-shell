@@ -2,9 +2,10 @@
 
 NAMES=$@
 INSTANCE_TYPE=""
-IMAGE_ID=ami-081609eef2e3cc958
+IMAGE_ID=ami-0dea2dd3e55956112
 SECURITY_GROUP_ID=sg-0be4b23bfc8adb5af
 DOMAIN_NAME=joindevops.live
+HOSTED_ZONE_ID=Z00055312F8QWOU888ABK
 
 # if mysql or mongodb instance_type should be t3.medium , for all others it is t2.micro
 
@@ -20,7 +21,7 @@ do
     IP_ADDRESS=$(aws ec2 run-instances --image-id $IMAGE_ID  --instance-type $INSTANCE_TYPE --security-group-ids $SECURITY_GROUP_ID  --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$i}]" | jq -r '.Instances[0].PrivateIpAddress')
     echo "created $i instance: $IP_ADDRESS"
 
-aws route53 change-resource-record-sets --hosted-zone-id Z00055312F8QWOU888ABK --change-batch '
+aws route53 change-resource-record-sets --hosted-zone-id  $HOSTED_ZONE_ID --change-batch '
 {
             "Changes": [{
             "Action": "CREATE",
